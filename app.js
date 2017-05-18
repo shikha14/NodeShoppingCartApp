@@ -3,11 +3,13 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+var validator = require('express-validator')
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var flash = require('connect-flash');
 var session = require('express-session');
+
 
 var expressHandlebar = require('express-handlebars')
 
@@ -33,6 +35,7 @@ app.set('view engine', '.hbs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(validator());
 app.use(cookieParser());
 app.use(session({
     secret: 'keyboard cat',
@@ -44,6 +47,11 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());;
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(function (req,res,next) {
+    res.locals.login = req.isAuthenticated();
+    next();
+});
 
 app.use('/', index);
 app.use('/user', users);

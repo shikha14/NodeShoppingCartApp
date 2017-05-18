@@ -6,28 +6,38 @@ var passport = require('passport');
 var csrfProtection = csrf();
 router.use(csrfProtection);
 
-/* GET user listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/profile',isLoggedIn, function (req, res, next) {
+    res.render('user/profile');
+});
+
+router.get('/logout',isLoggedIn, function (req, res, next) {
+    req.logout();
+    res.redirect('/');
+});
+
+
+router.use('/',notLoggedIn,function (req,res,next) {
+    next();
 });
 
 
 router.get('/signin', function(req, res, next) {
-    res.render('user/signin', { csrfToken: req.csrfToken() });
+    var messages = req.flash('error');
+    res.render('user/signin', { csrfToken: req.csrfToken(),messages:messages,hasErrors:messages.length>0});
 });
 
-router.get('/profile', function (req, res, next) {
-    res.render('user/profile');
-});
+
 
 router.get('/signup', function (req, res, next) {
     var messages = req.flash('error');
     res.render('user/signup', { csrfToken: req.csrfToken(),messages:messages,hasErrors:messages.length>0});
 });
 
-router.post('/signin', function(req, res, next) {
-   //console.log("Inside post /signin "+ req.body);
-});
+router.post('/signin', passport.authenticate('local.signin',{
+    successRedirect: 'profile',
+    failureRedirect: 'signin',
+    failureFlash: true
+}));
 
 router.post('/signup', passport.authenticate('local.signup',{
     successRedirect: 'profile',
@@ -36,3 +46,18 @@ router.post('/signup', passport.authenticate('local.signup',{
 }));
 
 module.exports = router;
+
+
+function isLoggedIn(req,res,next) {
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect('/');
+}
+
+function notLoggedIn(req,res,next) {
+    if(!req.isAuthenticated()){
+        return next();
+    }
+    res.redirect('/');
+}
