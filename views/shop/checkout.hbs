@@ -38,6 +38,9 @@
         <div id="collapsePayment" class="panel-collapse collapse in">
             <div class="panel-body">
                 <form action="/checkout" method="post" id="checkout-form">
+                    <div id="charge-error" class="alert alert-danger {{#if noError}} hidden {{/if}}">
+                        {{errorMsg}}
+                    </div>
                     <div class="radio">
                         <label>
                             <input type="radio" name="paymentMode" id="cod" value="cod" checked>
@@ -50,9 +53,6 @@
                             Credit Card
                         </label>
                         <div id="creditCardContainer" style="display: none">
-                            <div id="charge-error" class="alert alert-danger {{#if noError}}hidden{{/if}}">
-                                {{errMsg}}
-                            </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <input type="text" id="card-number" class="form-control" required placeholder="Card Number">

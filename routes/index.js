@@ -4,17 +4,19 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var Cart = require('../models/cart');
 var Product = require('../models/product');
+var Order = require('../models/order');
 var Cart = require('../models/cart');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+    var successMsg= req.flash('success')[0];
     Product.find(function (err, docs) {
         var productChunks = [];
         var chunkSize = 3;
         for (var i = 0; i < docs.length; i += chunkSize) {
             productChunks.push(docs.slice(i, i + chunkSize));
         }
-        res.render('shop/index', {title: 'Food Ordering App', products: productChunks});
+        res.render('shop/index', {title: 'Food Ordering App', products: productChunks,successMsg:successMsg,noMsg:!successMsg});
     });
 });
 
@@ -69,7 +71,7 @@ router.get('/cart',function (req,res,next) {
         for (var i = 0; i < docs.length; i += chunkSize) {
             productChunks.push(docs.slice(i, i + chunkSize));
         }
-        if (typeof req.session.cart === 'undefined') {
+        if (typeof req.session.cart === 'undefined' || !req.session.cart) {
             console.log("Inside undefined");
             res.render('shop/cart',{cartItems:null,title: 'Food Ordering App', products: productChunks});
         }else{
@@ -81,17 +83,39 @@ router.get('/cart',function (req,res,next) {
     });
 
 });
-// router.get('/checkout',function (req,res,next) {
-//     if(!req.session.cart){
-//         res.redirect('shop/cart');
-//     }
-//     var cart = new Cart(req.session.cart.items)
-//     res.render('shop/checkout',{total:cart.totalPrice});
-// });
-
 
 router.get('/checkout',function (req,res,next) {
-    res.render('shop/checkout');
+    if(!req.session.cart){
+        res.redirect('shop/cart');
+    }
+    var cart = new Cart(req.session.cart.items)
+    var errorMsg = req.flash('error')[0];
+    res.render('shop/checkout',{errorMsg:errorMsg,noError:!errorMsg,total:cart.totalPrice});
+});
+
+router.post('/checkout',function (req,res,next){
+    if(!req.session.cart){
+        res.redirect('shop/cart');
+    }
+    var cart = new Cart(req.session.cart.items);
+    var stripe = require("stripe")("sk_test_ThwMu7H7gpX8lWxRax70EEBd");
+    var token = req.body.stripeToken;
+    var charge = stripe.charges.create({
+        amount: cart.totalPrice * 100,
+        currency: "INR",
+        description: "Test Charge",
+        source: token,
+    }, function(err, charge) {
+       if(err){
+           console.log(err.message);
+           req.flash('error',err.message);
+           return res.redirect('/checkout');
+       }
+       req.flash('success',"Successfully placed order!");
+       req.session.cart = null;
+       res.redirect('/');
+    });
+
 });
 
 
