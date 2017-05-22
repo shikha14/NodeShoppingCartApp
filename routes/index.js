@@ -25,7 +25,7 @@ router.get('/add-to-cart/:id/:fromCart', function (req, res, next) {
     var productId = req.params.id;
     var fromCart=req.params.fromCart;
     console.log(fromCart);
-    var cart = new Cart(req.session.cart ? req.session.cart.items : {});
+    var cart = new Cart(req.session.cart ? req.session.cart : {});
 
     Product.findById(productId, function (err, product) {
         console.log(product);
@@ -33,7 +33,7 @@ router.get('/add-to-cart/:id/:fromCart', function (req, res, next) {
             console.log("Inside error::"+err);
             return res.redirect('/');
         }
-        cart.add(product, product._id);
+        cart.add(product, product.id);
         req.session.cart = cart;
         // console.log(req.session.cart);
 
@@ -48,7 +48,7 @@ router.get('/add-to-cart/:id/:fromCart', function (req, res, next) {
 
 router.get('/reduce/:id', function (req, res, next) {
     var productId = req.params.id;
-    var cart = new Cart(req.session.cart ? req.session.cart.items : {});
+    var cart = new Cart(req.session.cart ? req.session.cart : {});
     cart.reduce(productId);
     req.session.cart = cart;
     res.redirect('/cart');
@@ -57,7 +57,7 @@ router.get('/reduce/:id', function (req, res, next) {
 
 router.get('/removeAll/:id', function (req, res, next) {
     var productId = req.params.id;
-    var cart = new Cart(req.session.cart ? req.session.cart.items : {});
+    var cart = new Cart(req.session.cart ? req.session.cart : {});
     cart.removeAll(productId);
     req.session.cart = cart;
     res.redirect('/cart');
@@ -76,7 +76,7 @@ router.get('/cart',function (req,res,next) {
             res.render('shop/cart',{cartItems:null,title: 'Food Ordering App', products: productChunks});
         }else{
             console.log(req.session.cart);
-            var cart = new Cart(req.session.cart.items)
+            var cart = new Cart(req.session.cart)
             res.render('shop/cart', {cartItems:cart.generateArray(),totalPrice:cart.totalPrice,title: 'Food Ordering App', products: productChunks});
 
         }
@@ -88,7 +88,7 @@ router.get('/checkout',isLoggedIn,function (req,res,next) {
     if(!req.session.cart){
         res.redirect('shop/cart');
     }
-    var cart = new Cart(req.session.cart.items)
+    var cart = new Cart(req.session.cart)
     var errorMsg = req.flash('error')[0];
     res.render('shop/checkout',{errorMsg:errorMsg,noError:!errorMsg,total:cart.totalPrice});
 });
@@ -97,7 +97,7 @@ router.post('/checkout',isLoggedIn,function (req,res,next){
     if(!req.session.cart){
         res.redirect('shop/cart');
     }
-    var cart = new Cart(req.session.cart.items);
+    var cart = new Cart(req.session.cart);
     var stripe = require("stripe")("sk_test_ThwMu7H7gpX8lWxRax70EEBd");
     var token = req.body.stripeToken;
     var charge = stripe.charges.create({

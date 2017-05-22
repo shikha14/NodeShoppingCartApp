@@ -12,8 +12,10 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 
 
+
 var expressHandlebar = require('express-handlebars')
 
+mongoose.Promise = require('bluebird');
 var dbConfig = require('./config/db');
 
 var index = require('./routes/index');
