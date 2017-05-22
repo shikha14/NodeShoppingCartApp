@@ -84,7 +84,7 @@ router.get('/cart',function (req,res,next) {
 
 });
 
-router.get('/checkout',function (req,res,next) {
+router.get('/checkout',isLoggedIn,function (req,res,next) {
     if(!req.session.cart){
         res.redirect('shop/cart');
     }
@@ -93,7 +93,7 @@ router.get('/checkout',function (req,res,next) {
     res.render('shop/checkout',{errorMsg:errorMsg,noError:!errorMsg,total:cart.totalPrice});
 });
 
-router.post('/checkout',function (req,res,next){
+router.post('/checkout',isLoggedIn,function (req,res,next){
     if(!req.session.cart){
         res.redirect('shop/cart');
     }
@@ -111,12 +111,38 @@ router.post('/checkout',function (req,res,next){
            req.flash('error',err.message);
            return res.redirect('/checkout');
        }
-       req.flash('success',"Successfully placed order!");
-       req.session.cart = null;
-       res.redirect('/');
+
+       var order =new Order({
+           user: req.user,
+           cart: cart,
+           name:"dummy name",
+           address:"address",
+           paymentId:charge.id
+       });
+
+       order.save(function(err,result){
+           if(err){
+               console.log(err.message);
+               req.flash('error',err.message);
+               return res.redirect('/checkout');
+           }
+           req.flash('success',"Successfully placed order!");
+           req.session.cart = null;
+           res.redirect('/');
+       });
+
     });
 
 });
+
+
+function isLoggedIn(req,res,next) {
+    if(req.isAuthenticated()){
+        return next();
+    }
+    req.session.oldUrl = req.url;
+    res.redirect('/user/signin');
+}
 
 
 module.exports = router;
