@@ -1,0 +1,137 @@
+.thumbnail img {
+    max-height: 150px;
+}
+
+.thumbnail .description {
+    color: #7f7f7f;
+    margin-bottom: 2px;
+}
+
+.thumbnail .extraDescription {
+    color: rgba(127, 127, 127, 0.75);
+    font-size: smaller;
+}
+
+.price {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+
+.overlay {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.6);
+    overflow-x: hidden;
+    transition: 0.2s;
+}
+
+.overlay-content {
+    text-align: center;
+    height: 100%;
+}
+
+.overlay-cart-content{
+    width: 25%;
+    min-width: 250px;
+    float: right;
+    background: white;
+    height: 100%;
+}
+
+.overlay #closeCart {
+    margin-top: -3px;
+    text-decoration: none;
+    font-size: 30px;
+    color: #555555;
+    display: block;
+    transition: 0.5s;
+}
+
+.overlay #closeCart:hover, .overlay #closeCart:focus {
+    color: #f1f1f1;
+}
+
+
+@media screen and (max-height: 450px) {
+    .overlay a {font-size: 20px}
+}
+
+.overlay-cart-content .header{
+    display: flex;
+    padding:10px;
+}
+
+.overlay-cart-content .header h4{
+    width: 90%;
+    text-align: left;
+    color: #555555;
+}
+
+.overlay-cart-content .body{
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+
+}
+
+.overlay-cart-content .cartEmptyBody{
+    height: 80%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+
+}
+.overlay-cart-content .footer{
+    height: 10%;
+    margin-bottom:20px;
+}
+
+.cartItemCol{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.cartItemQty{
+    padding-left: 0px;
+    font-size: 17px;
+    color: #7c7d7c;
+}
+.cartItemClose{
+    margin-top: -3px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #555555;
+    display: flex;
+    transition: 0.5s;
+}
+#cutleryIcon{
+    font-size: 100px;
+    color: #fcf8e3;
+}
+.panel-heading{
+    color: #777;
+}
+
+.panel-heading .accordion-toggle:after {
+    font-family: 'Glyphicons Halflings';
+    content: "\e114";
+    float: right;
+    color: #777;
+}
+.panel-heading .accordion-toggle.collapsed:after {
+    content: "\e080";
+}
+#creditCardContainer{
+    background: rgba(224, 250, 215, 0.75);
+    padding: 10px;
+    margin: 10px;
+}
+

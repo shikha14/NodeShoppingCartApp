@@ -1,0 +1,86 @@
+<div class="panel-group container" id="accordion" style="width: 65%">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseUser">
+                    User Information
+                </a>
+            </h4>
+        </div>
+        <div id="collapseUser" class="panel-collapse collapse">
+            <div class="panel-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseAddress">
+                    Address Information
+                </a>
+            </h4>
+        </div>
+        <div id="collapseAddress" class="panel-collapse collapse">
+            <div class="panel-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapsePayment">
+                    Payment Information
+                </a>
+            </h4>
+        </div>
+        <div id="collapsePayment" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <form action="/checkout" method="post" id="checkout-form">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="paymentMode" id="cod" value="cod" checked>
+                            Cash On Delivery
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="paymentMode" id="cc" value="cc">
+                            Credit Card
+                        </label>
+                        <div id="creditCardContainer" style="display: none">
+                            <div id="charge-error" class="alert alert-danger {{#if noError}}hidden{{/if}}">
+                                {{errMsg}}
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" id="card-number" class="form-control" required placeholder="Card Number">
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" id="card-expiry-month" class="form-control" required placeholder="MM">
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" id="card-expiry-year" class="form-control" required placeholder="YYYY">
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" id="card-cvc" class="form-control" required placeholder="CVV">
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 10px">
+                                <div class="col-md-12">
+                                    <input type="text" id="card-name" class="form-control" required placeholder="Full Name(as mention on Card)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success pull-right" style="margin: 10px">Buy now</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript" src="javascripts/checkout.js"></script>
