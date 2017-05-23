@@ -9,6 +9,6 @@ var schema = new Schema({
     address:{type: String, required: true},
     name:{type: String, required: true},
     paymentId:{type: String, required: true}
-});
+}, { timestamps:true});
 
 module.exports = mongoose.model('Order', schema);

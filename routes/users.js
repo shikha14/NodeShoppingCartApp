@@ -17,8 +17,10 @@ router.get('/profile',isLoggedIn, function (req, res, next) {
         orders.forEach(function (order) {
                 cart =new Cart(order.cart);
                 order.items= cart.generateArray();
+                console.log(order.updatedAt);
         });
-        res.render('user/profile',{orders:orders});
+        console.log(orders.length);
+        res.render('user/profile',{orders:orders,hasOrder:orders.length>0});
     });
 
 });

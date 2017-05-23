@@ -20,6 +20,7 @@ var dbConfig = require('./config/db');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var productRoute = require('./routes/product');
 
 
 var app = express();
@@ -62,6 +63,7 @@ app.use(function (req,res,next) {
 
 app.use('/', index);
 app.use('/user', users);
+app.use('/product',productRoute);
 
 
 // catch 404 and forward to error handler
