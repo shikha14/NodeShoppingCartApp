@@ -37,7 +37,7 @@
         </div>
         <div id="collapsePayment" class="panel-collapse collapse in">
             <div class="panel-body">
-                <form action="/checkout" method="post" id="checkout-form">
+                <form action="/checkout" method="post" id="checkout-form" novalidate>
                     <div id="charge-error" class="alert alert-danger {{#if noError}} hidden {{/if}}">
                         {{errorMsg}}
                     </div>

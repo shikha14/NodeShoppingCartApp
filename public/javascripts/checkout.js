@@ -5,16 +5,23 @@ Stripe.setPublishableKey('pk_test_p8Vntar9YU6uaiajSDvAqOWP');
 var $form = $('#checkout-form');
 
 $form.submit(function (event) {
-    $('#charge-error').addClass('hidden');
-    $form.find('button').prop('disabled', true);
-    Stripe.card.createToken({
-        number: $('#card-number').val(),
-        cvc: $('#card-cvc').val(),
-        exp_month: $('#card-expiry-month').val(),
-        exp_year: $('#card-expiry-year').val(),
-        name: $('#card-name').val()
-    }, stripeResponseHandler);
+    if($('#checkout-form input[name=paymentMode]:checked').val()==='cc'){
+        $('#charge-error').addClass('hidden');
+        $form.find('button').prop('disabled', true);
+        Stripe.card.createToken({
+            number: $('#card-number').val(),
+            cvc: $('#card-cvc').val(),
+            exp_month: $('#card-expiry-month').val(),
+            exp_year: $('#card-expiry-year').val(),
+            name: $('#card-name').val()
+        }, stripeResponseHandler);
+        return false;
+    }else{
+
+        $form.get(0).submit();
+    }
     return false;
+
 });
 
 function stripeResponseHandler(status, response) {

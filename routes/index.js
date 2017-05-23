@@ -98,42 +98,57 @@ router.post('/checkout',isLoggedIn,function (req,res,next){
         res.redirect('shop/cart');
     }
     var cart = new Cart(req.session.cart);
-    var stripe = require("stripe")("sk_test_ThwMu7H7gpX8lWxRax70EEBd");
-    var token = req.body.stripeToken;
-    var charge = stripe.charges.create({
-        amount: cart.totalPrice * 100,
-        currency: "INR",
-        description: "Test Charge",
-        source: token,
-    }, function(err, charge) {
-       if(err){
-           console.log(err.message);
-           req.flash('error',err.message);
-           return res.redirect('/checkout');
-       }
+    var paymentMode =req.body.paymentMode;
+    if(paymentMode==='cc'){
+        var stripe = require("stripe")("sk_test_ThwMu7H7gpX8lWxRax70EEBd");
+        var token = req.body.stripeToken;
+        var charge = stripe.charges.create({
+            amount: cart.totalPrice * 100,
+            currency: "INR",
+            description: "Test Charge",
+            source: token,
+        }, function(err, charge) {
+            if(err){
+                console.log(err.message);
+                req.flash('error',err.message);
+                return res.redirect('/checkout');
+            }
 
-       var order =new Order({
-           user: req.user,
-           cart: cart,
-           name:"dummy name",
-           address:"address",
-           paymentId:charge.id
-       });
-
-       order.save(function(err,result){
-           if(err){
-               console.log(err.message);
-               req.flash('error',err.message);
-               return res.redirect('/checkout');
-           }
-           req.flash('success',"Successfully placed order!");
-           req.session.cart = null;
-           res.redirect('/');
-       });
-
-    });
-
+             var order =new Order({
+                user: req.user,
+                cart: cart,
+                name:"dummy name",
+                address:"address",
+                paymentId:charge.id,
+                paymentMode:paymentMode
+            });
+            saveOrder(order,req,res,next);
+        });
+    }else{
+        var order =new Order({
+            user: req.user,
+            cart: cart,
+            name:"dummy name",
+            address:"address",
+            paymentMode:paymentMode
+        });
+        saveOrder(order,req,res,next);
+    }
 });
+
+
+function saveOrder(order,req,res,next){
+    order.save(function(err,result){
+        if(err){
+            console.log(err.message);
+            req.flash('error',err.message);
+            return res.redirect('/checkout');
+        }
+        req.flash('success',"Successfully placed order!");
+        req.session.cart = null;
+        return res.redirect('/');
+    });
+}
 
 
 function isLoggedIn(req,res,next) {
