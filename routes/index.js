@@ -31,6 +31,7 @@ router.get('/add-to-cart/:id/:fromCart', function (req, res, next) {
         console.log(product);
         if(err){
             console.log("Inside error::"+err);
+            req.flash('success',"Item added to cart");
             return res.redirect('/');
         }
         cart.add(product, product.id);
@@ -156,6 +157,7 @@ function isLoggedIn(req,res,next) {
         return next();
     }
     req.session.oldUrl = req.url;
+    console.log("oldurl:"+ req.session.oldUrl)
     res.redirect('/user/signin');
 }
 

@@ -17,7 +17,11 @@ router.get('/profile',isLoggedIn, function (req, res, next) {
         orders.forEach(function (order) {
                 cart =new Cart(order.cart);
                 order.items= cart.generateArray();
-                console.log(order.updatedAt);
+                var orderDateTime = new Date(order.createdAt)  ;
+                orderDateTime = orderDateTime.toDateString() + " " + orderDateTime.getHours() + ":"+ orderDateTime.getMinutes();
+                order.dateTime=orderDateTime;
+                console.log("orderDateTime::"+orderDateTime);
+
         });
         console.log(orders.length);
         res.render('user/profile',{orders:orders,hasOrder:orders.length>0});
@@ -54,6 +58,7 @@ router.post('/signin', passport.authenticate('local.signin',{
 }),function (req, res, next) {
     if(req.session.oldUrl){
         var oldUrl=req.session.oldUrl;
+        console.log("oldurl"+oldUrl)
         req.session.oldUrl=null;
         res.redirect(oldUrl);
 
@@ -68,7 +73,7 @@ router.post('/signup', passport.authenticate('local.signup',{
 }),function (req, res, next) {
     if(req.session.oldUrl){
         var oldUrl=req.session.oldUrl;
-        console.log("oldurl"+url)
+        console.log("oldurl"+oldUrl)
         req.session.oldUrl=null;
         res.redirect(oldUrl);
     }else{

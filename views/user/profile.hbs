@@ -5,7 +5,7 @@
         <h2 style="justify-content: center;display: flex;"><a>My Orders</a></h2>
         {{# each orders }}
             <div class="panel panel-info">
-                <div class="panel-heading">Order Date: {{ this.createdAt }}</div>
+                <div class="panel-heading">Order Date: {{ this.dateTime }}</div>
                 <div class="panel-body">
                     <ul class="list-group">
                         {{# each this.items }}
