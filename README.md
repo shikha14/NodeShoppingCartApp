@@ -55,3 +55,16 @@ npm start
 - Payment using Stripe
 - Order History
 
+## Screenshot
+- Home Page
+![main](public/screenshot/main.png)
+
+- Cart
+![cart](public/screenshot/cart.png)
+
+- Checkout
+![checkout](public/screenshot/checkout.png)
+
+- OrderDetail
+![order_detail](public/screenshot/order_detail.png)
+
