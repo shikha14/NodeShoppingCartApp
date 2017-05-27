@@ -15,7 +15,7 @@ The easiest way to get started is to clone the repository:
 
 - Get the latest snapshot
 ```sh
-git clone repurl
+git clone repo_url
 ```
 
 - Change directory
@@ -33,7 +33,7 @@ npm install
 mongod
 ```
 
-- store dummy products in mongodb
+- Then Store dummy products in mongodb
 ```sh
 node seed/product-seed.js 
 ```
@@ -46,7 +46,7 @@ npm start
 
 
 
-##Features
+## Features
 
 - Local Authentication using Email and Password
 - Flash notifications
